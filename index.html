@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Karl Steltenpohl — Software Engineer</title>
+  <meta name="description" content="Karl Steltenpohl — software engineer. Two decades of projects: VJ tools, web platforms, creative code. Type 'help' to look around." />
+  <link rel="canonical" href="https://karlsteltenpohl.com/" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/src/styles/terminal.css" />
+  <link rel="stylesheet" href="/src/styles/crt.css" />
+</head>
+<body>
+  <a class="skip" href="#prompt-input">skip to prompt</a>
+  <div id="terminal">
+    <header id="masthead">
+      <pre class="banner banner-wide" aria-hidden="true">██╗  ██╗ █████╗ ██████╗ ██╗
+██║ ██╔╝██╔══██╗██╔══██╗██║
+█████╔╝ ███████║██████╔╝██║
+██╔═██╗ ██╔══██║██╔══██╗██║
+██║  ██╗██║  ██║██║  ██║███████╗
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+███████╗████████╗███████╗██╗  ████████╗███████╗███╗   ██╗██████╗  ██████╗ ██╗  ██╗██╗
+██╔════╝╚══██╔══╝██╔════╝██║  ╚══██╔══╝██╔════╝████╗  ██║██╔══██╗██╔═══██╗██║  ██║██║
+███████╗   ██║   █████╗  ██║     ██║   █████╗  ██╔██╗ ██║██████╔╝██║   ██║███████║██║
+╚════██║   ██║   ██╔══╝  ██║     ██║   ██╔══╝  ██║╚██╗██║██╔═══╝ ██║   ██║██╔══██║██║
+███████║   ██║   ███████╗███████╗██║   ███████╗██║ ╚████║██║     ╚██████╔╝██║  ██║███████╗
+╚══════╝   ╚═╝   ╚══════╝╚══════╝╚═╝   ╚══════╝╚═╝  ╚═══╝╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝</pre>
+      <pre class="banner banner-narrow" aria-hidden="true">
+██╗  ██╗███████╗
+██║ ██╔╝██╔════╝
+█████╔╝ ███████╗
+██╔═██╗ ╚════██║
+██║  ██╗███████║
+╚═╝  ╚═╝╚══════╝</pre>
+      <h1 class="sr-only">Karl Steltenpohl — Software Engineer</h1>
+      <p class="tagline"><span class="dim">//</span> software engineer <span class="dim">·</span> vj <span class="dim">·</span> maker</p>
+    </header>
+    <main id="screen" role="log" aria-live="polite"><!--ssr--></main>
+    <nav id="palette" aria-label="quick commands">
+      <button type="button" data-cmd="help">[help]</button>
+      <button type="button" data-cmd="ls">[ls]</button>
+      <button type="button" data-cmd="about">[about]</button>
+      <button type="button" data-cmd="contact">[contact]</button>
+    </nav>
+    <form id="prompt" autocomplete="off">
+      <label for="prompt-input" id="prompt-label"><span class="user">guest@karlsteltenpohl.com</span><span class="dim">:</span><span class="path">~</span><span class="accent">$</span></label>
+      <span class="input-wrap">
+        <input id="prompt-input" name="cmd" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" aria-label="command input, type help for commands" />
+        <span class="fake-caret" aria-hidden="true">█</span>
+      </span>
+    </form>
+    <footer id="foot">
+      <span class="dim">© 2026 karl [dot] steltenpohl [at] gmail [dot] com</span>
+      <span class="foot-links">
+        <a href="https://www.instagram.com/karl.steltenpohl" rel="me noopener">instagram</a>
+        <a href="https://www.linkedin.com/in/karl-steltenpohl-26ab338/" rel="me noopener">linkedin</a>
+      </span>
+    </footer>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

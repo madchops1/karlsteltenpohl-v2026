@@ -1,0 +1,244 @@
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --bg: #0a0e0a;
+  --bg-raised: #101710;
+  --fg: #c8ffc8;
+  --accent: #33ff33;
+  --dim: #5a8a5a;
+  --amber: #ffb000;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--bg); }
+
+body {
+  font-family: var(--mono);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+#terminal {
+  max-width: 80ch;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 4rem;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; background: rgba(51, 255, 51, 0.08); }
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dim { color: var(--dim); }
+.accent { color: var(--accent); }
+.amber { color: var(--amber); }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--bg-raised);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+.skip:focus { left: 0; }
+
+/* ---- masthead ---- */
+.banner {
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(51, 255, 51, 0.35);
+  font-size: min(13px, 1.6vw);
+  line-height: 1.2;
+  overflow: hidden;
+  user-select: none;
+}
+.banner-narrow { font-size: 13px; }
+.banner-narrow { display: none; }
+.tagline { margin: 0.5rem 0 1.5rem; }
+
+@media (max-width: 640px) {
+  .banner-wide { display: none; }
+  .banner-narrow { display: block; }
+}
+
+/* ---- screen output ---- */
+#screen > * { margin-bottom: 0.75rem; }
+
+.echo { color: var(--dim); margin-top: 1rem; }
+.echo .user { color: var(--dim); }
+.echo .cmd { color: var(--fg); font-weight: 700; }
+
+.error { color: var(--amber); }
+
+.block p { margin-bottom: 0.75rem; max-width: 72ch; }
+.block p:last-child { margin-bottom: 0; }
+
+.hint { color: var(--dim); }
+.hint code, .hint a { color: var(--accent); }
+
+/* ---- help table ---- */
+.help-table { display: grid; grid-template-columns: max-content 1fr; column-gap: 2ch; row-gap: 2px; }
+.help-table .cmd-name { color: var(--accent); white-space: nowrap; }
+.help-table .cmd-desc { color: var(--fg); }
+
+/* ---- ls listing ---- */
+.ls { display: block; }
+.ls-head, .ls-row {
+  display: grid;
+  grid-template-columns: 34ch 13ch 1fr;
+  column-gap: 2ch;
+  align-items: baseline;
+  padding: 1px 0;
+}
+.ls-head { color: var(--dim); border-bottom: 1px solid var(--dim); margin-bottom: 2px; }
+.ls-row { color: var(--fg); }
+.ls-row:hover { background: rgba(51, 255, 51, 0.08); text-decoration: none; }
+.ls-row .ls-slug { color: var(--accent); overflow-wrap: anywhere; }
+.ls-row .ls-year { color: var(--dim); white-space: nowrap; }
+.ls-row .ls-title { color: var(--fg); }
+.ls-total { color: var(--dim); margin-bottom: 2px; }
+
+@media (max-width: 720px) {
+  .ls-head { display: none; }
+  .ls-row {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed rgba(90, 138, 90, 0.35);
+  }
+  .ls-row .ls-title { font-size: 0.9em; }
+  .ls-row .ls-year-empty { display: none; }
+}
+
+/* ---- project view ---- */
+.project h2 {
+  color: var(--accent);
+  font-size: 1.1em;
+  border-bottom: 1px solid var(--dim);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.project .meta { color: var(--dim); margin-bottom: 0.75rem; }
+.project .desc p { margin-bottom: 0.75rem; max-width: 72ch; }
+
+.links { list-style: none; margin: 0.75rem 0; }
+.links li::before { content: '└─ '; color: var(--dim); }
+.links a { overflow-wrap: anywhere; }
+
+.nav-back { display: inline-block; margin-top: 0.5rem; }
+
+/* ---- image frames ---- */
+.frame {
+  border: 1px solid var(--dim);
+  padding: 10px;
+  margin: 1.25rem 0;
+  position: relative;
+  background: var(--bg-raised);
+}
+.frame .frame-label {
+  position: absolute;
+  top: -0.75em;
+  left: 10px;
+  background: var(--bg);
+  color: var(--dim);
+  padding: 0 0.75ch;
+  font-size: 0.8em;
+}
+.frame .img-wrap { position: relative; }
+.frame img { display: block; width: 100%; height: auto; }
+.frame canvas.glitch-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.frame figcaption { color: var(--dim); font-size: 0.8em; padding-top: 6px; }
+
+/* ---- palette + prompt ---- */
+#palette { margin: 1.5rem 0 0.25rem; display: flex; flex-wrap: wrap; gap: 0.25rem 1ch; }
+#palette button {
+  font: inherit;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+#palette button:hover { background: rgba(51, 255, 51, 0.08); text-decoration: underline; }
+
+#prompt {
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  padding: 0.25rem 0 1rem;
+}
+#prompt-label { white-space: nowrap; }
+#prompt-label .user { color: var(--dim); }
+#prompt-label .path { color: var(--fg); }
+#prompt-label .accent { margin-left: 0.5ch; }
+
+.input-wrap { position: relative; flex: 1; min-width: 8ch; }
+#prompt-input {
+  font: inherit;
+  font-size: 16px; /* prevents iOS zoom-on-focus */
+  width: 100%;
+  color: var(--fg);
+  background: transparent;
+  border: none;
+  caret-color: var(--accent);
+}
+#prompt-input:focus { outline: none; }
+
+.fake-caret {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--accent);
+  pointer-events: none;
+}
+.input-wrap.hide-caret .fake-caret { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .fake-caret { animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+}
+
+/* ---- footer ---- */
+#foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 2ch;
+  justify-content: space-between;
+  border-top: 1px solid rgba(90, 138, 90, 0.35);
+  padding-top: 0.75rem;
+  font-size: 0.85em;
+}
+.foot-links { display: flex; gap: 2ch; }

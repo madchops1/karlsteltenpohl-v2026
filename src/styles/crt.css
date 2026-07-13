@@ -1,0 +1,48 @@
+/* CRT overlay — subtle scanlines over the whole page, a hair of green tint on
+   images. Everything here is decorative: `crt off` (html.crt-off) removes it and
+   animation only runs when the user allows motion. */
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0px,
+    rgba(0, 0, 0, 0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.35;
+}
+
+.frame .img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.12) 0px,
+      rgba(0, 0, 0, 0.12) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    rgba(51, 255, 51, 0.05);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body::after { animation: crt-drift 8s linear infinite; }
+  @keyframes crt-drift {
+    from { transform: translateY(0); }
+    to { transform: translateY(3px); }
+  }
+}
+
+html.crt-off body::after,
+html.crt-off .frame .img-wrap::after {
+  display: none;
+}
