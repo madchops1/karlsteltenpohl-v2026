@@ -160,6 +160,9 @@ export function renderContact() {
         rel: 'me noopener',
         text: 'linkedin/karl-steltenpohl',
       }),
+    ]),
+    el('li', {}, [
+      el('a', { href: 'https://x.com/madchops1', rel: 'me noopener', text: 'x/madchops1' }),
     ])
   )
   article.append(ul)

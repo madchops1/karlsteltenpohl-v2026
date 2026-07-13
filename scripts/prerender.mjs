@@ -130,6 +130,7 @@ const personJsonLd = `<script type="application/ld+json">${JSON.stringify({
   sameAs: [
     'https://www.instagram.com/karl.steltenpohl',
     'https://www.linkedin.com/in/karl-steltenpohl-26ab338/',
+    'https://x.com/madchops1',
   ],
 })}</script>`
 await writeFile(
