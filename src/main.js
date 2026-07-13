@@ -1,6 +1,7 @@
 import { Terminal } from './terminal.js'
 import { registerCommands, applyCrtPreference } from './commands.js'
 import { initRouter, commandForPath } from './router.js'
+import { initBackground } from './background.js'
 
 applyCrtPreference()
 
@@ -8,6 +9,7 @@ const term = new Terminal({
   screen: document.getElementById('screen'),
   form: document.getElementById('prompt'),
   input: document.getElementById('prompt-input'),
+  scroller: document.getElementById('term-scroll'),
 })
 
 registerCommands(term)
@@ -33,4 +35,10 @@ document.getElementById('terminal').addEventListener('click', (e) => {
 const initial = commandForPath(location.pathname) || 'home'
 term.clear()
 term.exec(initial, { echo: true, push: false, record: false })
-window.scrollTo(0, 0)
+term.scrollToTop()
+
+// Animated background starts after first paint; skipped while effects are off.
+if (!document.documentElement.classList.contains('crt-off')) {
+  const start = () => initBackground()
+  'requestIdleCallback' in window ? requestIdleCallback(start) : setTimeout(start, 60)
+}

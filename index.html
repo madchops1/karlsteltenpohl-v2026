@@ -12,8 +12,15 @@
   <link rel="stylesheet" href="/src/styles/crt.css" />
 </head>
 <body>
+  <div id="bg" aria-hidden="true"></div>
   <a class="skip" href="#prompt-input">skip to prompt</a>
-  <div id="terminal">
+  <div id="term-window">
+    <div id="term-titlebar" aria-hidden="true">
+      <span class="tl-dots"><i class="tl-close"></i><i class="tl-min"></i><i class="tl-max"></i></span>
+      <span class="tl-title">guest@karlsteltenpohl.com — zsh — 80×24</span>
+    </div>
+    <div id="term-scroll">
+      <div id="terminal">
     <header id="masthead">
       <pre class="banner banner-wide" aria-hidden="true">██╗  ██╗ █████╗ ██████╗ ██╗
 ██║ ██╔╝██╔══██╗██╔══██╗██║
@@ -51,6 +58,8 @@
         <span class="fake-caret" aria-hidden="true">█</span>
       </span>
     </form>
+      </div>
+    </div>
     <footer id="foot">
       <span class="dim">© 2026 karl [dot] steltenpohl [at] gmail [dot] com</span>
       <span class="foot-links">

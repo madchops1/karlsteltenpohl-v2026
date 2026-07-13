@@ -5,10 +5,11 @@ const HISTORY_KEY = 'term-history'
 const HISTORY_MAX = 100
 
 export class Terminal {
-  constructor({ screen, form, input }) {
+  constructor({ screen, form, input, scroller }) {
     this.screen = screen
     this.form = form
     this.input = input
+    this.scroller = scroller
     this.commands = new Map()
     this.aliases = new Map()
     this.history = this.loadHistory()
@@ -98,10 +99,11 @@ export class Terminal {
     try {
       const out = def.run(args, { term: this, push })
       if (out) this.print(out)
+      if (!def.noAutoScroll) this.scrollToPrompt()
     } catch (err) {
       this.print(this.error(`${name}: ${err.message}`))
+      this.scrollToPrompt()
     }
-    this.scrollToPrompt()
   }
 
   suggest(name) {
@@ -195,7 +197,22 @@ export class Terminal {
   }
 
   scrollToPrompt() {
-    this.form.scrollIntoView({ block: 'end' })
+    if (this.scroller) this.scroller.scrollTop = this.scroller.scrollHeight
+    else this.form.scrollIntoView({ block: 'end' })
+  }
+
+  scrollToTop() {
+    if (this.scroller) this.scroller.scrollTop = 0
+    else window.scrollTo(0, 0)
+  }
+
+  // bring a freshly printed block (e.g. a project view) to the top of the
+  // viewport so long content is read from the start
+  scrollToNode(node) {
+    if (!this.scroller) return node.scrollIntoView()
+    const sr = this.scroller.getBoundingClientRect()
+    const nr = node.getBoundingClientRect()
+    this.scroller.scrollTop += nr.top - sr.top - 8
   }
 
   clear() {

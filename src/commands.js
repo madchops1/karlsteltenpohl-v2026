@@ -11,6 +11,7 @@ import {
 } from './render.js'
 import { push, SITE_TITLE } from './router.js'
 import { glitchReveal, effectsEnabled } from './glitch.js'
+import { initBackground, setBackgroundEnabled } from './background.js'
 
 const CRT_KEY = 'crt-off'
 
@@ -61,8 +62,10 @@ export function registerCommands(term) {
         const node = renderProject(p)
         term.print(node)
         glitchReveal(node)
+        term.scrollToNode(node)
         return null
       },
+      noAutoScroll: true,
     },
     {
       name: 'about',
@@ -72,8 +75,10 @@ export function registerCommands(term) {
         const node = renderAbout(projects)
         term.print(node)
         glitchReveal(node)
+        term.scrollToNode(node)
         return null
       },
+      noAutoScroll: true,
     },
     {
       name: 'contact',
@@ -109,6 +114,8 @@ export function registerCommands(term) {
         const off = arg === 'off' ? true : arg === 'on' ? false : !document.documentElement.classList.contains('crt-off')
         localStorage.setItem(CRT_KEY, off ? '1' : '0')
         document.documentElement.classList.toggle('crt-off', off)
+        if (!off) initBackground()
+        setBackgroundEnabled(!off)
         return renderHint(`effects ${off ? 'off' : 'on'}`)
       },
     },
