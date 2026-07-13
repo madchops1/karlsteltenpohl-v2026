@@ -1,14 +1,15 @@
-// Full-viewport Three.js background: a still voxel diorama — terraced
-// blocky mountains (Crossy Road-style) in phosphor greens, flanking an open
-// valley behind the terminal window, with water in the lowlands and sparse
-// tree blocks on the heights. Almost no motion: just a slow star drift,
-// a faint camera bob, and mouse parallax. Purely decorative: skipped without
-// WebGL, rendered once under prefers-reduced-motion, hidden by `crt off`.
+// Full-viewport Three.js background: a mountain range as a network of nodes —
+// a point cloud joined by thin wireframe edges, shaped after Karl's painted
+// 14er artwork (one dominant summit with long descending ridgelines, layered
+// secondary ridges) but digitized, in phosphor greens with pale "snow" nodes
+// on the high ground. The range is still: only star drift, a faint camera bob,
+// and mouse parallax move. Purely decorative: skipped without WebGL, rendered
+// once under prefers-reduced-motion, hidden by `crt off`.
 
 let state = null
 let enabled = true
 
-// deterministic hash-based value noise (no RNG — same diorama every visit)
+// deterministic hash-based value noise (no RNG — same range every visit)
 function hash(x, y) {
   const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453
   return s - Math.floor(s)
@@ -26,10 +27,31 @@ function noise(x, y) {
   const d = hash(ix + 1, iy + 1)
   return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy
 }
+// ridged noise → sharp crest lines instead of rolling hills
+function ridged(x, y) {
+  const r = (v) => 1 - Math.abs(2 * v - 1)
+  return r(noise(x, y)) * 0.55 + r(noise(x * 2.1, y * 2.1)) * 0.3 + r(noise(x * 4.3, y * 4.3)) * 0.15
+}
+function gauss(dx, dz, sx, sz) {
+  return Math.exp(-((dx * dx) / (2 * sx * sx) + (dz * dz) / (2 * sz * sz)))
+}
 
-const LEVEL_COLORS = [0x103618, 0x185422, 0x21732b, 0x2a9234, 0x33b13d, 0x3dd046]
-const CELL = 10 // voxel footprint in world units
-const STEP = 7 // height per terrace level
+// heightfield shaped after the painting: main summit left-of-center with a
+// ridge running right, flanking ridges, foreground shoulder — all roughened
+// by ridged noise so the crests read as craggy lines of nodes
+function heightAt(wx, wz) {
+  const crag = ridged(wx * 0.012, wz * 0.012)
+  let peaks = 0
+  peaks = Math.max(peaks, 150 * gauss(wx + 70, wz + 195, 90, 55)) // main summit
+  peaks = Math.max(peaks, 88 * gauss(wx - 115, wz + 175, 90, 55)) // right ridge
+  peaks = Math.max(peaks, 62 * gauss(wx + 225, wz + 140, 80, 50)) // far left arm
+  peaks = Math.max(peaks, 40 * gauss(wx - 175, wz + 70, 70, 42)) // foreground right
+  peaks = Math.max(peaks, 28 * gauss(wx + 150, wz + 45, 60, 40)) // foreground left
+  let h = peaks * (0.6 + 0.4 * crag) + crag * 16
+  // soften the strip straight behind/below the terminal window
+  if (Math.abs(wx) < 46 && wz > -110) h *= 0.35 + 0.65 * Math.min(1, (-wz) / 110)
+  return h
+}
 
 export async function initBackground() {
   const container = document.getElementById('bg')
@@ -55,89 +77,72 @@ export async function initBackground() {
 
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0x040604)
-  scene.fog = new THREE.Fog(0x040604, 130, 330)
+  scene.fog = new THREE.Fog(0x040604, 190, 540)
 
-  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 500)
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 600)
   camera.position.set(0, 26, 66)
-  camera.lookAt(0, 6, -60)
+  camera.lookAt(0, 16, -80)
 
-  scene.add(new THREE.AmbientLight(0x9db89d, 0.65))
-  const sun = new THREE.DirectionalLight(0xd8ffd8, 1.0)
-  sun.position.set(70, 120, 50)
-  scene.add(sun)
-
-  // --- terraced voxel terrain, running from deep fog to the camera's feet ---
-  const COLS = 40
-  const ROWS = 30
-  const tiles = []
-  for (let gx = 0; gx < COLS; gx++) {
-    for (let gz = 0; gz < ROWS; gz++) {
-      const x = (gx - COLS / 2 + 0.5) * CELL
-      const z = -270 + gz * CELL
-      // two octaves of noise → 0..1, pushed higher on the flanks so the
-      // middle stays an open valley behind the window
-      let h = noise(gx * 0.16, gz * 0.19) * 0.7 + noise(gx * 0.4, gz * 0.45) * 0.3
-      const flank = Math.min(1, Math.max(0, (Math.abs(x) - 20) / 70))
-      h = h * (0.12 + 1.2 * flank)
-      const level = Math.min(LEVEL_COLORS.length - 1, Math.floor(h * LEVEL_COLORS.length))
-      tiles.push({ x, z, level })
+  // --- the node-network range ---
+  const MESH_Z = -130
+  const geometry = new THREE.PlaneGeometry(640, 360, 128, 84)
+  const pos = geometry.attributes.position
+  const colors = new Float32Array(pos.count * 3)
+  const dim = { r: 0x14 / 255, g: 0x3f / 255, b: 0x1a / 255 }
+  const bright = { r: 0x49 / 255, g: 0xd9 / 255, b: 0x51 / 255 }
+  const snow = { r: 0xc9 / 255, g: 0xff / 255, b: 0xd2 / 255 }
+  for (let i = 0; i < pos.count; i++) {
+    const wx = pos.getX(i)
+    const wz = MESH_Z - pos.getY(i)
+    const h = heightAt(wx, wz)
+    pos.setZ(i, h)
+    let t = Math.min(1, h / 130)
+    let c = {
+      r: dim.r + (bright.r - dim.r) * t,
+      g: dim.g + (bright.g - dim.g) * t,
+      b: dim.b + (bright.b - dim.b) * t,
     }
+    if (h > 88) {
+      // pale "snowfield" nodes near the crests, like the painting's patches
+      const s = Math.min(1, (h - 88) / 32) * (0.35 + 0.65 * hash(wx, wz))
+      c = {
+        r: c.r + (snow.r - c.r) * s,
+        g: c.g + (snow.g - c.g) * s,
+        b: c.b + (snow.b - c.b) * s,
+      }
+    }
+    colors[i * 3] = c.r
+    colors[i * 3 + 1] = c.g
+    colors[i * 3 + 2] = c.b
   }
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
 
-  const box = new THREE.BoxGeometry(1, 1, 1)
-  const terrain = new THREE.InstancedMesh(
-    box,
-    new THREE.MeshLambertMaterial(),
-    tiles.length
-  )
-  const m = new THREE.Matrix4()
-  const color = new THREE.Color()
-  tiles.forEach((t, i) => {
-    const height = (t.level + 1) * STEP
-    m.makeScale(CELL, height, CELL)
-    m.setPosition(t.x, height / 2 - 4, t.z)
-    terrain.setMatrixAt(i, m)
-    terrain.setColorAt(i, color.setHex(LEVEL_COLORS[t.level]))
-  })
-  scene.add(terrain)
+  const range = new THREE.Group()
+  range.rotation.x = -Math.PI / 2
+  range.position.set(0, -6, MESH_Z)
 
-  // --- sparse tree blocks on the mid/high tiles ---
-  const treeTiles = tiles.filter(
-    (t) => t.level >= 3 && hash(t.x * 0.7, t.z * 1.3) > 0.82
+  // nodes
+  const points = new THREE.Points(
+    geometry,
+    new THREE.PointsMaterial({ size: 1.5, vertexColors: true, sizeAttenuation: true })
   )
-  if (treeTiles.length) {
-    const trees = new THREE.InstancedMesh(
-      box,
-      new THREE.MeshLambertMaterial(),
-      treeTiles.length
-    )
-    treeTiles.forEach((t, i) => {
-      const base = (t.level + 1) * STEP - 4
-      const s = CELL * 0.42
-      m.makeScale(s, s * 1.5, s)
-      m.setPosition(t.x, base + (s * 1.5) / 2, t.z)
-      trees.setMatrixAt(i, m)
-      trees.setColorAt(i, color.setHex(hash(t.z, t.x) > 0.5 ? 0x49d951 : 0x3fc247))
-    })
-    scene.add(trees)
-  }
+  range.add(points)
 
-  // --- still water filling the valley floor ---
-  const water = new THREE.Mesh(
-    new THREE.PlaneGeometry(COLS * CELL, ROWS * CELL + 80),
-    new THREE.MeshBasicMaterial({ color: 0x08301f, transparent: true, opacity: 0.9 })
+  // edges of the network — the triangulated wireframe between nodes
+  const wire = new THREE.LineSegments(
+    new THREE.WireframeGeometry(geometry),
+    new THREE.LineBasicMaterial({ color: 0x2a7d31, transparent: true, opacity: 0.3 })
   )
-  water.rotation.x = -Math.PI / 2
-  water.position.set(0, STEP * 0.8, -270 + (ROWS * CELL + 80) / 2 - 40)
-  scene.add(water)
+  range.add(wire)
+  scene.add(range)
 
   // --- slow drifting stars above the horizon ---
   const starGeo = new THREE.BufferGeometry()
   const starPos = new Float32Array(300 * 3)
   for (let i = 0; i < 300; i++) {
-    starPos[i * 3] = (hash(i, 1) - 0.5) * 420
-    starPos[i * 3 + 1] = 20 + hash(i, 2) * 130
-    starPos[i * 3 + 2] = -80 - hash(i, 3) * 240
+    starPos[i * 3] = (hash(i, 1) - 0.5) * 460
+    starPos[i * 3 + 1] = 30 + hash(i, 2) * 150
+    starPos[i * 3 + 2] = -120 - hash(i, 3) * 260
   }
   starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3))
   const stars = new THREE.Points(
@@ -171,10 +176,10 @@ export async function initBackground() {
     state.raf = requestAnimationFrame(frame)
     if (document.hidden || !enabled) return
     const t = (now - t0) / 1000
-    // gentle drift only — the diorama itself is still
+    // gentle drift only — the range itself is still
     camera.position.x += (mouseX * 3 - camera.position.x) * 0.02
     camera.position.y += (26 + Math.sin(t * 0.25) * 0.8 - mouseY * 1.5 - camera.position.y) * 0.02
-    camera.lookAt(0, 6, -60)
+    camera.lookAt(0, 16, -80)
     stars.rotation.y = t / 220
     renderer.render(scene, camera)
   }
