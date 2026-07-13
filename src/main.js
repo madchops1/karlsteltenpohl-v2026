@@ -36,12 +36,17 @@ document.getElementById('terminal').addEventListener('click', (e) => {
   term.input.focus({ preventScroll: true })
 })
 
-// Hydrate: replace prerendered static content with the identical client render
-// for the current URL (which also plays the glitch reveal on project pages).
+// Hydrate: boot sequence — the masthead (title banner + tagline) types itself
+// out first, then the route's command runs and its output types in turn.
+// Cold project pages get the same boot. typewrite() is instant when effects
+// are off, so boot() still runs immediately in that case.
 const initial = commandForPath(location.pathname) || 'home'
 term.clear()
-term.exec(initial, { echo: true, push: false, record: false })
-term.scrollToTop()
+const boot = () => {
+  term.exec(initial, { echo: true, push: false, record: false })
+  term.scrollToTop()
+}
+typewrite(document.getElementById('masthead'), { onDone: boot })
 
 // Animated background starts after first paint; skipped while effects are off.
 if (!document.documentElement.classList.contains('crt-off')) {

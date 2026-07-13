@@ -99,9 +99,9 @@ export function renderHome(projects) {
     block([
       el('p', {
         text:
-          'Welcome. This is the portfolio of Karl Steltenpohl — two decades of ' +
-          'software: VJ tools and live-visual hardware, web platforms, creative code, ' +
-          'and engineering leadership.',
+          'Welcome to my site — two decades of software engineering: full-stack, ' +
+          'devsecops, frameworks, VJ tools and live-visual hardware, web platforms, ' +
+          'creative code, and engineering leadership.',
       }),
     ])
   )

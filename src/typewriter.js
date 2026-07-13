@@ -14,9 +14,10 @@ export function finishActive() {
 // Prepare + start typing `root` (may still be detached; reveal starts on rAF).
 // opts.follow keeps `opts.scroller` pinned to the bottom while typing.
 // opts.onFrame fires once per revealed .frame element.
-export function typewrite(root, { follow = false, scroller = null, onFrame = null } = {}) {
+export function typewrite(root, { follow = false, scroller = null, onFrame = null, onDone = null } = {}) {
   if (!effectsEnabled()) {
     if (onFrame) for (const f of root.querySelectorAll('.frame')) onFrame(f)
+    if (onDone) onDone()
     return
   }
   finishActive()
@@ -44,7 +45,10 @@ export function typewrite(root, { follow = false, scroller = null, onFrame = nul
       s.frame.classList.add('tw-pending')
     }
   }
-  if (steps.length === 0) return
+  if (steps.length === 0) {
+    if (onDone) onDone()
+    return
+  }
 
   const duration = Math.min(1400, Math.max(350, total * 1.1))
   const rate = total / duration // chars per ms
@@ -64,6 +68,11 @@ export function typewrite(root, { follow = false, scroller = null, onFrame = nul
     cancelAnimationFrame(raf)
     document.removeEventListener('keydown', finish, true)
     if (active && active.finish === finish) active = null
+    if (onDone) {
+      const cb = onDone
+      onDone = null // fire once, whether finished naturally or skipped
+      cb()
+    }
   }
 
   const finish = () => {
