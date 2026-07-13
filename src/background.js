@@ -1,63 +1,35 @@
-// Full-viewport Three.js background: an endless wireframe terrain rolling
-// toward the camera, phosphor-green with depth fade — behind the terminal
-// window. Purely decorative: skipped without WebGL, frozen to a single frame
-// under prefers-reduced-motion, hidden entirely by `crt off`.
+// Full-viewport Three.js background: a still voxel diorama — terraced
+// blocky mountains (Crossy Road-style) in phosphor greens, flanking an open
+// valley behind the terminal window, with water in the lowlands and sparse
+// tree blocks on the heights. Almost no motion: just a slow star drift,
+// a faint camera bob, and mouse parallax. Purely decorative: skipped without
+// WebGL, rendered once under prefers-reduced-motion, hidden by `crt off`.
 
-let state = null // { renderer, scene, camera, material, raf, container }
+let state = null
 let enabled = true
 
-const VERTEX = /* glsl */ `
-  uniform float uTime;
-  varying float vGlow;
+// deterministic hash-based value noise (no RNG — same diorama every visit)
+function hash(x, y) {
+  const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453
+  return s - Math.floor(s)
+}
+function noise(x, y) {
+  const ix = Math.floor(x)
+  const iy = Math.floor(y)
+  const fx = x - ix
+  const fy = y - iy
+  const ux = fx * fx * (3 - 2 * fx)
+  const uy = fy * fy * (3 - 2 * fy)
+  const a = hash(ix, iy)
+  const b = hash(ix + 1, iy)
+  const c = hash(ix, iy + 1)
+  const d = hash(ix + 1, iy + 1)
+  return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy
+}
 
-  float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-  }
-  float noise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(
-      mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
-      mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
-      u.y
-    );
-  }
-
-  varying float vDepth;
-
-  float ridge(vec2 p) {
-    return 1.0 - abs(2.0 * noise(p) - 1.0);
-  }
-
-  void main() {
-    vec3 pos = position;
-    // ridged fractal — sharp geometric peaks, scrolling slowly toward camera
-    vec2 p = vec2(pos.x * 0.035, (pos.y + uTime * 9.0) * 0.035);
-    float h = ridge(p) * 0.60 + ridge(p * 2.1) * 0.27 + ridge(p * 4.3) * 0.13;
-    h = pow(h, 2.4);
-    // keep a flat valley down the middle so the horizon stays open
-    float valley = smoothstep(8.0, 60.0, abs(pos.x));
-    pos.z = h * 58.0 * (0.05 + 0.95 * valley);
-    vGlow = h;
-    vec4 mv = modelViewMatrix * vec4(pos, 1.0);
-    vDepth = -mv.z;
-    gl_Position = projectionMatrix * mv;
-  }
-`
-
-const FRAGMENT = /* glsl */ `
-  uniform vec3 uColor;
-  uniform vec3 uBg;
-  varying float vGlow;
-  varying float vDepth;
-  void main() {
-    vec3 c = uColor * (0.35 + vGlow * 0.9);
-    // fade into the background with distance so the horizon dissolves
-    c = mix(c, uBg, smoothstep(70.0, 230.0, vDepth));
-    gl_FragColor = vec4(c, 1.0);
-  }
-`
+const LEVEL_COLORS = [0x103618, 0x185422, 0x21732b, 0x2a9234, 0x33b13d, 0x3dd046]
+const CELL = 10 // voxel footprint in world units
+const STEP = 7 // height per terrace level
 
 export async function initBackground() {
   const container = document.getElementById('bg')
@@ -83,35 +55,89 @@ export async function initBackground() {
 
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0x040604)
+  scene.fog = new THREE.Fog(0x040604, 130, 330)
 
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 400)
-  camera.position.set(0, 15, 46)
-  camera.lookAt(0, 4, -60)
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 500)
+  camera.position.set(0, 26, 66)
+  camera.lookAt(0, 6, -60)
 
-  const material = new THREE.ShaderMaterial({
-    uniforms: {
-      uTime: { value: 0 },
-      uColor: { value: new THREE.Color(0x2fae2f) },
-      uBg: { value: new THREE.Color(0x040604) },
-    },
-    vertexShader: VERTEX,
-    fragmentShader: FRAGMENT,
-    wireframe: true,
+  scene.add(new THREE.AmbientLight(0x9db89d, 0.65))
+  const sun = new THREE.DirectionalLight(0xd8ffd8, 1.0)
+  sun.position.set(70, 120, 50)
+  scene.add(sun)
+
+  // --- terraced voxel terrain, running from deep fog to the camera's feet ---
+  const COLS = 40
+  const ROWS = 30
+  const tiles = []
+  for (let gx = 0; gx < COLS; gx++) {
+    for (let gz = 0; gz < ROWS; gz++) {
+      const x = (gx - COLS / 2 + 0.5) * CELL
+      const z = -270 + gz * CELL
+      // two octaves of noise → 0..1, pushed higher on the flanks so the
+      // middle stays an open valley behind the window
+      let h = noise(gx * 0.16, gz * 0.19) * 0.7 + noise(gx * 0.4, gz * 0.45) * 0.3
+      const flank = Math.min(1, Math.max(0, (Math.abs(x) - 20) / 70))
+      h = h * (0.12 + 1.2 * flank)
+      const level = Math.min(LEVEL_COLORS.length - 1, Math.floor(h * LEVEL_COLORS.length))
+      tiles.push({ x, z, level })
+    }
+  }
+
+  const box = new THREE.BoxGeometry(1, 1, 1)
+  const terrain = new THREE.InstancedMesh(
+    box,
+    new THREE.MeshLambertMaterial(),
+    tiles.length
+  )
+  const m = new THREE.Matrix4()
+  const color = new THREE.Color()
+  tiles.forEach((t, i) => {
+    const height = (t.level + 1) * STEP
+    m.makeScale(CELL, height, CELL)
+    m.setPosition(t.x, height / 2 - 4, t.z)
+    terrain.setMatrixAt(i, m)
+    terrain.setColorAt(i, color.setHex(LEVEL_COLORS[t.level]))
   })
-  // coarser mesh = bigger facets, more low-poly-mountain
-  const geometry = new THREE.PlaneGeometry(320, 300, 80, 64)
-  const terrain = new THREE.Mesh(geometry, material)
-  terrain.rotation.x = -Math.PI / 2
-  terrain.position.set(0, -6, -80)
   scene.add(terrain)
 
-  // slow drifting star points above the horizon
+  // --- sparse tree blocks on the mid/high tiles ---
+  const treeTiles = tiles.filter(
+    (t) => t.level >= 3 && hash(t.x * 0.7, t.z * 1.3) > 0.82
+  )
+  if (treeTiles.length) {
+    const trees = new THREE.InstancedMesh(
+      box,
+      new THREE.MeshLambertMaterial(),
+      treeTiles.length
+    )
+    treeTiles.forEach((t, i) => {
+      const base = (t.level + 1) * STEP - 4
+      const s = CELL * 0.42
+      m.makeScale(s, s * 1.5, s)
+      m.setPosition(t.x, base + (s * 1.5) / 2, t.z)
+      trees.setMatrixAt(i, m)
+      trees.setColorAt(i, color.setHex(hash(t.z, t.x) > 0.5 ? 0x49d951 : 0x3fc247))
+    })
+    scene.add(trees)
+  }
+
+  // --- still water filling the valley floor ---
+  const water = new THREE.Mesh(
+    new THREE.PlaneGeometry(COLS * CELL, ROWS * CELL + 80),
+    new THREE.MeshBasicMaterial({ color: 0x08301f, transparent: true, opacity: 0.9 })
+  )
+  water.rotation.x = -Math.PI / 2
+  water.position.set(0, STEP * 0.8, -270 + (ROWS * CELL + 80) / 2 - 40)
+  scene.add(water)
+
+  // --- slow drifting stars above the horizon ---
   const starGeo = new THREE.BufferGeometry()
   const starPos = new Float32Array(300 * 3)
   for (let i = 0; i < 300; i++) {
-    starPos[i * 3] = (Math.random() - 0.5) * 400
-    starPos[i * 3 + 1] = 10 + Math.random() * 120
-    starPos[i * 3 + 2] = -60 - Math.random() * 240
+    starPos[i * 3] = (hash(i, 1) - 0.5) * 420
+    starPos[i * 3 + 1] = 20 + hash(i, 2) * 130
+    starPos[i * 3 + 2] = -80 - hash(i, 3) * 240
   }
   starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3))
   const stars = new THREE.Points(
@@ -120,7 +146,7 @@ export async function initBackground() {
   )
   scene.add(stars)
 
-  state = { renderer, scene, camera, material, raf: 0, container, stars }
+  state = { renderer, container }
 
   let mouseX = 0
   let mouseY = 0
@@ -136,7 +162,6 @@ export async function initBackground() {
   })
 
   if (reduceMotion) {
-    material.uniforms.uTime.value = 20
     renderer.render(scene, camera)
     return
   }
@@ -145,11 +170,12 @@ export async function initBackground() {
   function frame(now) {
     state.raf = requestAnimationFrame(frame)
     if (document.hidden || !enabled) return
-    material.uniforms.uTime.value = (now - t0) / 1000
-    camera.position.x += (mouseX * 4 - camera.position.x) * 0.02
-    camera.position.y += (15 - mouseY * 2 - camera.position.y) * 0.02
-    camera.lookAt(0, 4, -60)
-    stars.rotation.y = (now - t0) / 90000
+    const t = (now - t0) / 1000
+    // gentle drift only — the diorama itself is still
+    camera.position.x += (mouseX * 3 - camera.position.x) * 0.02
+    camera.position.y += (26 + Math.sin(t * 0.25) * 0.8 - mouseY * 1.5 - camera.position.y) * 0.02
+    camera.lookAt(0, 6, -60)
+    stars.rotation.y = t / 220
     renderer.render(scene, camera)
   }
   state.raf = requestAnimationFrame(frame)
