@@ -45,11 +45,13 @@ term.clear()
 const boot = () => {
   term.exec(initial, { echo: true, push: false, record: false })
   term.scrollToTop()
+  // Start the animated background only after the boot sequence has the
+  // stage — keeps three.js off the main thread during initial load.
+  if (!document.documentElement.classList.contains('crt-off')) {
+    const start = () => initBackground()
+    'requestIdleCallback' in window
+      ? requestIdleCallback(start, { timeout: 2500 })
+      : setTimeout(start, 1500)
+  }
 }
 typewrite(document.getElementById('masthead'), { onDone: boot })
-
-// Animated background starts after first paint; skipped while effects are off.
-if (!document.documentElement.classList.contains('crt-off')) {
-  const start = () => initBackground()
-  'requestIdleCallback' in window ? requestIdleCallback(start) : setTimeout(start, 60)
-}
