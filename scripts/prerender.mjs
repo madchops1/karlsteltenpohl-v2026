@@ -7,6 +7,9 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises'
 
 const ORIGIN = 'https://karlsteltenpohl.com'
 const SITE_TITLE = 'Karl Steltenpohl — Software Engineer'
+// Served-URL prefix ('' on the custom domain, '/karlsteltenpohl-v2026' on the
+// github.io preview). Canonical/OG/sitemap URLs always use ORIGIN, not BASE.
+const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '')
 
 const dist = new URL('../dist/', import.meta.url)
 const shell = await readFile(new URL('index.html', dist), 'utf8')
@@ -27,7 +30,7 @@ function lsHtml() {
   const rows = projects
     .map(
       (p) =>
-        `<a class="ls-row" href="/projects/${p.slug}">` +
+        `<a class="ls-row" href="${BASE}/projects/${p.slug}">` +
         `<span class="ls-slug">${esc(p.slug)}</span>` +
         `<span class="${p.year ? 'ls-year' : 'ls-year ls-year-empty'}">${esc(p.year || '····')}</span>` +
         `<span class="ls-title">${esc(p.title)}</span></a>`
@@ -49,7 +52,7 @@ function projectHtml(p) {
     .map(
       (img, i) =>
         `<figure class="frame"><span class="frame-label" aria-hidden="true">img: ${String(i + 1).padStart(2, '0')} / ${p.images.length}</span>` +
-        `<span class="img-wrap"><img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"></span></figure>`
+        `<span class="img-wrap"><img src="${BASE}${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"></span></figure>`
     )
     .join('\n')
   const links = p.links.length
@@ -60,7 +63,7 @@ function projectHtml(p) {
   return (
     `${echoHtml('open ' + p.slug)}<article class="project"><h2>${esc(p.title)}</h2>` +
     `<div class="meta">${esc(meta)}</div><div class="desc">${desc}</div>\n${figures}\n${links}` +
-    `<a class="nav-back" href="/">[← back to all projects]</a></article>`
+    `<a class="nav-back" href="${BASE}/">[← back to all projects]</a></article>`
   )
 }
 
@@ -146,7 +149,7 @@ await writeFile(
   stampPage({
     content:
       `${echoHtml('open ???')}<div class="error">zsh: no such file or directory</div>` +
-      `<div class="hint">try <a href="/">home</a> or <code>ls</code> — all projects live under /projects/&lt;slug&gt;</div>${lsHtml()}`,
+      `<div class="hint">try <a href="${BASE}/">home</a> or <code>ls</code> — all projects live under /projects/&lt;slug&gt;</div>${lsHtml()}`,
     title: `404 — ${SITE_TITLE}`,
     description: 'No such file or directory.',
     canonicalPath: '/404.html',

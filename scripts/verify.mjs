@@ -32,6 +32,7 @@ const SLUGS = [
 ]
 
 const dist = new URL('../dist/', import.meta.url)
+const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '')
 const errors = []
 const check = (cond, msg) => {
   if (!cond) errors.push(msg)
@@ -72,10 +73,12 @@ for (const slug of SLUGS) {
   check(html.includes('class="project"'), `${slug}: missing project markup`)
   check(html.includes('class="frame"'), `${slug}: missing image frame markup`)
 
-  const imgs = [...html.matchAll(/<img src="(\/images\/projects\/[^"]+)"/g)].map((m) => m[1])
+  const imgs = [...html.matchAll(/<img src="([^"]*\/images\/projects\/[^"]+)"/g)].map((m) => m[1])
   check(imgs.length >= 1, `${slug}: no project images in page`)
   for (const src of imgs) {
-    const s = await stat(new URL(src.slice(1), dist)).catch(() => null)
+    check(src.startsWith(`${BASE}/images/`), `${slug}: image src not under base: ${src}`)
+    const distPath = src.slice(BASE.length + 1)
+    const s = await stat(new URL(distPath, dist)).catch(() => null)
     check(s && s.size > 5 * 1024, `${slug}: image missing or tiny in dist: ${src}`)
   }
 }
@@ -83,7 +86,7 @@ for (const slug of SLUGS) {
 // home lists all 26
 const home = await readFile(new URL('index.html', dist), 'utf8').catch(() => '')
 for (const slug of SLUGS) {
-  check(home.includes(`href="/projects/${slug}"`), `home: missing link to ${slug}`)
+  check(home.includes(`href="${BASE}/projects/${slug}"`), `home: missing link to ${slug}`)
 }
 
 // sitemap, CNAME, 404

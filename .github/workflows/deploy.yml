@@ -19,17 +19,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
+      - id: pages
+        uses: actions/configure-pages@v5
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
       - run: npm ci
       # build = vite build + prerender + verify; verify fails the deploy
-      # unless all 26 project pages are present and complete
+      # unless all 26 project pages are present and complete.
+      # BASE_PATH is '/karlsteltenpohl-v2026' on the github.io preview and ''
+      # once the custom domain is configured — assets/links adapt automatically.
       - run: npm run build
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

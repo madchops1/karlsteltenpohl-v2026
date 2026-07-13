@@ -1,6 +1,7 @@
 // Pure DOM builders: projects.json entries → output fragments. The prerender
 // template in scripts/prerender.mjs mirrors this markup — keep them in sync
 // (scripts/verify.mjs asserts the shared class names/structure in the build).
+import { withBase } from './router.js'
 
 export function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag)
@@ -33,7 +34,7 @@ export function renderLs(projects) {
   )
   nav.append(head)
   for (const p of projects) {
-    const row = el('a', { class: 'ls-row', href: `/projects/${p.slug}` })
+    const row = el('a', { class: 'ls-row', href: withBase(`/projects/${p.slug}`) })
     row.append(
       el('span', { class: 'ls-slug', text: p.slug }),
       el('span', { class: p.year ? 'ls-year' : 'ls-year ls-year-empty', text: p.year || '····' }),
@@ -48,7 +49,7 @@ export function renderFrame(src, alt, label) {
   const figure = el('figure', { class: 'frame' })
   figure.append(el('span', { class: 'frame-label', 'aria-hidden': 'true', text: label }))
   const wrap = el('span', { class: 'img-wrap' })
-  wrap.append(el('img', { src, alt, loading: 'lazy', decoding: 'async' }))
+  wrap.append(el('img', { src: withBase(src), alt, loading: 'lazy', decoding: 'async' }))
   figure.append(wrap)
   return figure
 }
@@ -79,7 +80,7 @@ export function renderProject(p) {
     article.append(ul)
   }
 
-  article.append(el('a', { class: 'nav-back', href: '/', text: '[← back to all projects]' }))
+  article.append(el('a', { class: 'nav-back', href: withBase('/'), text: '[← back to all projects]' }))
   return article
 }
 
