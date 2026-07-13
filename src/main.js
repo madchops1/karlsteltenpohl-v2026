@@ -2,6 +2,7 @@ import { Terminal } from './terminal.js'
 import { registerCommands, applyCrtPreference } from './commands.js'
 import { initRouter, commandForPath } from './router.js'
 import { initBackground } from './background.js'
+import { typewrite, finishActive } from './typewriter.js'
 
 applyCrtPreference()
 
@@ -15,10 +16,15 @@ const term = new Terminal({
 registerCommands(term)
 initRouter(term)
 
-// Palette chips: tap runs the command (and echoes it, keeping the metaphor).
-document.getElementById('palette').addEventListener('click', (e) => {
-  const btn = e.target.closest('button[data-cmd]')
-  if (btn) term.exec(btn.dataset.cmd, { record: false })
+// Returned command output types itself out; frames glitch in when reached.
+// Running a new command finishes whatever is still typing.
+term.decorate = (node) => typewrite(node, { follow: true, scroller: term.scroller })
+term.beforeExec = finishActive
+
+// Anything with data-cmd (palette chips, the masthead QR badge) runs a command.
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-cmd]')
+  if (el) term.exec(el.dataset.cmd, { record: false })
 })
 
 // Tap anywhere on the terminal to focus the prompt (synchronously, so iOS

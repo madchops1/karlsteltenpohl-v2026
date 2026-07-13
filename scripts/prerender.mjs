@@ -49,11 +49,14 @@ function projectHtml(p) {
     .map((t) => `<p>${esc(t)}</p>`)
     .join('\n')
   const figures = p.images
-    .map(
-      (img, i) =>
+    .map((img, i) => {
+      const dims = img.width && img.height ? ` width="${img.width}" height="${img.height}"` : ''
+      const load = i === 0 ? ' fetchpriority="high"' : ' loading="lazy"'
+      return (
         `<figure class="frame"><span class="frame-label" aria-hidden="true">img: ${String(i + 1).padStart(2, '0')} / ${p.images.length}</span>` +
-        `<span class="img-wrap"><img src="${BASE}${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"></span></figure>`
-    )
+        `<span class="img-wrap"><img src="${BASE}${esc(img.src)}" alt="${esc(img.alt)}"${dims}${load} decoding="async"></span></figure>`
+      )
+    })
     .join('\n')
   const links = p.links.length
     ? `<ul class="links">${p.links

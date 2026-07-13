@@ -167,13 +167,49 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 .banner-narrow { display: none; }
 .tagline { margin: 0.5rem 0 1.5rem; }
 
+.mast-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2ch;
+}
+.mast-text { min-width: 0; }
+
+#qr-badge {
+  flex: none;
+  width: 122px;
+  padding: 5px;
+  margin-top: 4px;
+  background: none;
+  border: 1px solid var(--dim);
+  cursor: pointer;
+}
+#qr-badge img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  /* the source PNG has a transparent background — lay it on white, then tint
+     the whole thing phosphor: dark modules on pale-green paper, still scannable */
+  background: #fff;
+  filter: grayscale(1) sepia(1) saturate(3.5) hue-rotate(62deg) brightness(1.05);
+}
+#qr-badge:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 14px rgba(51, 255, 51, 0.3);
+}
+
 @media (max-width: 640px) {
   .banner-wide { display: none; }
   .banner-narrow { display: block; }
+  #qr-badge { width: 86px; }
 }
 
 /* ---- screen output ---- */
 #screen > * { margin-bottom: 0.75rem; }
+
+/* frames stay hidden until the typewriter reaches them */
+.tw-pending { visibility: hidden; }
 
 .echo { color: var(--dim); margin-top: 1rem; }
 .echo .user { color: var(--dim); }
@@ -202,7 +238,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   padding: 1px 0;
 }
 .ls-head { color: var(--dim); border-bottom: 1px solid var(--dim); margin-bottom: 2px; }
-.ls-row { color: var(--fg); }
+.ls-row { color: var(--fg); min-height: 1.55em; }
 .ls-row:hover { background: rgba(51, 255, 51, 0.08); text-decoration: none; }
 .ls-row .ls-slug { color: var(--accent); overflow-wrap: anywhere; }
 .ls-row .ls-year { color: var(--dim); white-space: nowrap; }

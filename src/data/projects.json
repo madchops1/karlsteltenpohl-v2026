@@ -6,8 +6,10 @@
     "description": "The CVJ-1 is a compact touchscreen VJ deck built for performing live visuals with the immediacy of a DJ controller. Designed around VISUALZ 3, it combines a dedicated hardware interface, real-time visual mixing, audio-reactive control, clip-based layers, shaders, effects, and performance tools into one portable unit.\n\nInstead of treating video as something that only gets produced ahead of time, the CVJ-1 makes visuals playable. Artists can mix layers, trigger clips, react to music, adjust effects, and control a full visual set from a focused touchscreen workstation built specifically for VJs.\n\nThe goal was to create the video counterpart to a DJ deck: a self-contained device for generating, shaping, and performing visuals live. Whether used on stage, in a studio, or as part of a larger live production rig, the CVJ-1 gives visual artists a dedicated instrument for real-time performance.",
     "images": [
       {
-        "src": "/images/projects/cvj-1/01.png",
-        "alt": "CVJ-1 VJ Deck"
+        "src": "/images/projects/cvj-1/01.jpg",
+        "alt": "CVJ-1 VJ Deck",
+        "width": 1000,
+        "height": 750
       }
     ],
     "links": [
@@ -24,12 +26,10 @@
     "description": "VISUALZ 3 is a real-time workstation for live visuals, built to make video feel as performable as audio. It brings creation, generation, mixing, effects, layers, shaders, and audio-reactive control into one focused app for VJs, artists, performers, and live event creators.\n\nInstead of jumping between multiple tools, VISUALZ lets you build and perform inside a single environment. You can mix clip-based layers, react to live audio, generate visual assets, patch effects, control visuals with MIDI, and shape a full live set in real time.\n\nVersion 3 expands the original VISUALZ concept into a more complete creative system, with built-in AI tools for generating video, shaders, 3D models, textures, sprite sheets, and plug-ins. It is designed for both experimentation and performance, whether you are running visuals from a laptop or using the CVJ-1, the world’s first fully integrated touchscreen VJ deck.\n\nVISUALZ 3 is built around one core idea: video deserves tools that are as immediate, expressive, and playable as music.",
     "images": [
       {
-        "src": "/images/projects/visualz/01.png",
-        "alt": "VISUALZ VJ Workstation v3.x.x"
-      },
-      {
-        "src": "/images/projects/visualz/02.png",
-        "alt": "VISUALZ VJ Workstation v3.x.x"
+        "src": "/images/projects/visualz/01.jpg",
+        "alt": "VISUALZ VJ Workstation v3.x.x",
+        "width": 1448,
+        "height": 1086
       }
     ],
     "links": [
@@ -46,8 +46,10 @@
     "description": "At The Desire Company, I lead the engineering team, promoted to director in 2025. I play a key role in shaping our tech product strategy for our portal and other properties. My work spans full-stack development, infrastructure, DevOps, and QA—while also helping define and execute on the roadmap alongside cross-functional teams.\n\nWith 20 years of engineering experience and several years in director-level leadership, I focus on building scalable, reliable systems and driving efficient, high-velocity development. From writing critical platform code to mentoring engineers and aligning tech execution with business goals, I’m committed to delivering products that support growth and real-world impact.",
     "images": [
       {
-        "src": "/images/projects/the-desire-company/01.png",
-        "alt": "Director of Engineering - The Desire Company 2019 - Present"
+        "src": "/images/projects/the-desire-company/01.jpg",
+        "alt": "Director of Engineering - The Desire Company 2019 - Present",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -64,12 +66,16 @@
     "description": "58Peaks.net is my passion project—a creative journey to capture the beauty and spirit of Colorado’s 14ers through art and design. Each poster in the series is a hand-crafted tribute to one of Colorado’s 58 peaks over 14,000 feet, blending my love for the outdoors with my background in design and technology.\n\nWhat started as a personal challenge—to summit, and learn about these mountains—has grown into a collection that celebrates adventure, resilience, and the landscapes that inspire us. For me, 58Peaks is more than artwork; it’s a way to share the awe of these summits and to connect with others who find meaning in the mountains.",
     "images": [
       {
-        "src": "/images/projects/58peaks/01.png",
-        "alt": "58peaks"
+        "src": "/images/projects/58peaks/01.jpg",
+        "alt": "58peaks",
+        "width": 800,
+        "height": 600
       },
       {
-        "src": "/images/projects/58peaks/02.png",
-        "alt": "58peaks"
+        "src": "/images/projects/58peaks/02.jpg",
+        "alt": "58peaks",
+        "width": 512,
+        "height": 512
       }
     ],
     "links": [
@@ -86,8 +92,10 @@
     "description": "Since 2018 I’ve been building VISUALZ (visualzstudio.com), a project that’s grown into a fully-fledged tool for DJs, artists, and performers to bring their music to life with real-time, audio-reactive visuals.\n\nWhat started as a creative experiment has gone through dozens of versions and iterations, each one pushing the boundaries of what live visuals can be. Along the way, I’ve designed not only the software but also hardware that’s currently in development—making VISUALZ a complete platform for performance and expression.\n\nAt its core, VISUALZ is about merging sound and light in a way that feels intuitive, immersive, and powerful. It’s a project that’s continually evolving, shaped by feedback from the community and my own obsession with the intersection of music, technology, and design.",
     "images": [
       {
-        "src": "/images/projects/visualz-v1-v2/01.png",
-        "alt": "VISUALZ VJ Worksation v1.x.x & v2.x.x"
+        "src": "/images/projects/visualz-v1-v2/01.jpg",
+        "alt": "VISUALZ VJ Worksation v1.x.x & v2.x.x",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -104,8 +112,10 @@
     "description": "The second coloring book in the series.",
     "images": [
       {
-        "src": "/images/projects/robot-and-puppy-2/01.png",
-        "alt": "Robot & Puppy Coloring Book #2"
+        "src": "/images/projects/robot-and-puppy-2/01.jpg",
+        "alt": "Robot & Puppy Coloring Book #2",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -122,8 +132,10 @@
     "description": "The first in the coloring book series.",
     "images": [
       {
-        "src": "/images/projects/robot-and-puppy-1/01.png",
-        "alt": "Robot and Puppy Coloring Book #1"
+        "src": "/images/projects/robot-and-puppy-1/01.jpg",
+        "alt": "Robot and Puppy Coloring Book #1",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -140,8 +152,10 @@
     "description": "Building a 3D character from scratch in Three.js can sometimes feel like sculpting in code—painstaking to position each limb, sweat over materials and geometry settings, and then wire up animation logic. What if you could define your entire character—head, torso, arms, legs, tails or even antennae—in a single JSON-like object, and have it instantiated, shaded, and ready-to-animate with one constructor call? That’s exactly what the Robot + Puppy character generator does.\n\nObject-Notation Bootstrap Define any number of body parts and dimensions in a plain JavaScript object. No more copy-pasting sphere or box geometry setups for every limb.\n\nAutomatic Grouping & Positioning Each part is added to a central THREE.Group so you can move, rotate or scale your whole character as one.\n\nCustomizable Materials Supply material parameters (colors, shininess, textures) per-part or let it fall back to sensible defaults.\n\nBuilt-In Animations & Behaviors Robots blink, move mouths and grab; puppies wag tails, blink, lick and follow your mouse pointer—all without extra animation boilerplate.\n\nEasy Scene Integration A simple addCharacter(bodyDims, x, y, z, key) call places your character in the scene, ready for lights, camera and orbit controls.\n\nAt its core is Character.js, a single class that:\n\nParses your dimensions object, looping through keys like head, body, armLeft, legRight, etc.\n\nCreates the appropriate THREE.Geometry (BoxGeometry, SphereGeometry, CylinderGeometry, etc.) with your sizes.\n\nApplies MeshPhongMaterial (or your custom material options) and enables shadows.\n\nPositions each mesh relative to a central pivot, so limbs sit correctly on the torso.\n\nAdds each mesh to a THREE.Group, exposing that group for scene insertion.\n\nYou never have to manually compute offsets or parent/child relationships—Character.js does it for you.\n\n1. Include Three.js and the character generator.\n\n2. Define Your Character\n\n3. Define Your Character\n\nPlay with it live on CodePen: https://codepen.io/madchops/pen/GWrvWN\n\nGrab the source (Character.js) on GitHub: https://github.com/madchops1/robotandpuppy-threejs\n\nSpeed: Spin up placeholders or fully featured characters in minutes.\n\nFlexibility: Swap shapes, colors or entire parts by editing your dimensions object.\n\nScalability: Add new body parts—wings, tails, tools—without touching the core generator code.\n\nMaintainability: Centralized character logic keeps your scene code clean and focused on choreography.\n\nWhether you’re prototyping game avatars, building a 3D chat app or just exploring creative coding, this generator turns hours of setup into a few lines of JSON. Give your next Three.js project a head start—literally—by bootstrapping your characters from object notation to fully interactive 3D models.\n\nExplore the live demo on CodePen—adapt the JSON to your imagination, and get your Three.js characters running in record time.",
     "images": [
       {
-        "src": "/images/projects/json-threejs-character-generator/01.png",
-        "alt": "JSON Three.js Character Generator"
+        "src": "/images/projects/json-threejs-character-generator/01.jpg",
+        "alt": "JSON Three.js Character Generator",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -162,8 +176,10 @@
     "description": "Automated trading experiments, machine learning / ai trading bot. Used AWS for machine learning training and models. Connects to various markets for trading. Many different algorithms and trading strategies.\n\nRepository: https://github.com/madchops1/Dutchess.ai",
     "images": [
       {
-        "src": "/images/projects/dutchess-ai/01.png",
-        "alt": "Dutchess.ai - 2017"
+        "src": "/images/projects/dutchess-ai/01.jpg",
+        "alt": "Dutchess.ai - 2017",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -180,8 +196,10 @@
     "description": "AngularJS and Angular. Worked on the main SAAS product engineering team from 2016 - 2018.",
     "images": [
       {
-        "src": "/images/projects/oranj-financial-advisor-tools/01.png",
-        "alt": "Sr. Frontend Engineer - Oranj Financial Advisor Tools 2016-2018"
+        "src": "/images/projects/oranj-financial-advisor-tools/01.jpg",
+        "alt": "Sr. Frontend Engineer - Oranj Financial Advisor Tools 2016-2018",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -193,8 +211,10 @@
     "description": "Botmap was a tool built for developers to help generate sitemaps for single page applications. SEO can be more difficult these days due to javascript loaded content and this program helps developers crawl all the pages in their SPA site.",
     "images": [
       {
-        "src": "/images/projects/botmap-sitemap-generator/01.png",
-        "alt": "Botmap.io Sitemap Generator 2018"
+        "src": "/images/projects/botmap-sitemap-generator/01.jpg",
+        "alt": "Botmap.io Sitemap Generator 2018",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -206,8 +226,10 @@
     "description": "Directed and developed the 2016 Bonnaroo.com website and devops for high traffic and rapid scaling.",
     "images": [
       {
-        "src": "/images/projects/bonnaroo-website-2016/01.png",
-        "alt": "Assoc. Director of Technology - Superfly - Bonnaroo Website 2016"
+        "src": "/images/projects/bonnaroo-website-2016/01.jpg",
+        "alt": "Assoc. Director of Technology - Superfly - Bonnaroo Website 2016",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -219,8 +241,10 @@
     "description": "Directed and developed the OutsideLands.com website and devops for high traffic and rapid scaling.",
     "images": [
       {
-        "src": "/images/projects/outsidelands-website-2016/01.png",
-        "alt": "Assoc. Director of Technology - Superfly - Outside Lands Website 2016"
+        "src": "/images/projects/outsidelands-website-2016/01.jpg",
+        "alt": "Assoc. Director of Technology - Superfly - Outside Lands Website 2016",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -232,12 +256,10 @@
     "description": "As the sole sr. frontend engineer at Label Insight, a Big Data startup, I was responsible for the development of our main product, using Angular js. Other technologies used Node + npm, Grunt, Gulp, Bower, LESS, jQuery, and more.",
     "images": [
       {
-        "src": "/images/projects/label-insight/01.png",
-        "alt": "Sr. Frontend Engineer - Label Insight 2015"
-      },
-      {
-        "src": "/images/projects/label-insight/02.png",
-        "alt": "Sr. Frontend Engineer - Label Insight 2015"
+        "src": "/images/projects/label-insight/01.jpg",
+        "alt": "Sr. Frontend Engineer - Label Insight 2015",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -249,8 +271,10 @@
     "description": "Stack: LAMP, Laravel",
     "images": [
       {
-        "src": "/images/projects/barchart/01.png",
-        "alt": "Full Stack Engineer - Barchart.com - Commodity Grain Elevator Tools 2014 -2015"
+        "src": "/images/projects/barchart/01.jpg",
+        "alt": "Full Stack Engineer - Barchart.com - Commodity Grain Elevator Tools 2014 -2015",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -262,8 +286,10 @@
     "description": "GoReturnMe.com was an automated asset tracking platform where users offered rewards for returning lost items using barcode technology. We took 1st place at RedEye Big Idea Awards in 2014.",
     "images": [
       {
-        "src": "/images/projects/goreturnme/01.png",
-        "alt": "Founder GoReturnMe - 1st Place Redeye Big Idea Awards 2014"
+        "src": "/images/projects/goreturnme/01.jpg",
+        "alt": "Founder GoReturnMe - 1st Place Redeye Big Idea Awards 2014",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -275,8 +301,10 @@
     "description": "Tatanka is an open source, relatively small, website/application framework for the LAMP stack. Its purpose is to provide the basic structure of a website, application, or api plus some basic functionality in order to allow developers to rapidly build in the lamp stack.",
     "images": [
       {
-        "src": "/images/projects/tatanka-php-framework/01.png",
-        "alt": "Creator of Tatanka PHP Framework 2013"
+        "src": "/images/projects/tatanka-php-framework/01.jpg",
+        "alt": "Creator of Tatanka PHP Framework 2013",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -293,8 +321,10 @@
     "description": "Stack: LAMP & Drupal Framework",
     "images": [
       {
-        "src": "/images/projects/music-dealers/01.png",
-        "alt": "Full Stack Engineer - MusicDealers.com - Connecting Bands & Brands 2011 - 2014"
+        "src": "/images/projects/music-dealers/01.jpg",
+        "alt": "Full Stack Engineer - MusicDealers.com - Connecting Bands & Brands 2011 - 2014",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -306,8 +336,10 @@
     "description": "Design and developed a data management tool which improved the speed and efficiency of the DB admins. Participated in the planning and rebuild of the updated Lightology.com eCommerce site. Developed user friendly web apps that streamline lighting design and configuration of modern lighting product systems.\n\nStack: LAMP Website: Lightology.com",
     "images": [
       {
-        "src": "/images/projects/lightology/01.png",
-        "alt": "Full Stack Engineer - Lightology 2011"
+        "src": "/images/projects/lightology/01.jpg",
+        "alt": "Full Stack Engineer - Lightology 2011",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -324,8 +356,10 @@
     "description": "As the Sr. full stack engineer primary responsibilities included database design and php development for a wide range of online applications and websites, such as Chicago’s own HallsRental.com. I also participated in development eTeccʼs proprietary CMS, juicyCMS.\n\nStack: LAMP Link: Website",
     "images": [
       {
-        "src": "/images/projects/etecc/01.png",
-        "alt": "Full Stack Engineer - eTecc 2009 -2010"
+        "src": "/images/projects/etecc/01.jpg",
+        "alt": "Full Stack Engineer - eTecc 2009 -2010",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -346,8 +380,10 @@
     "description": "Agency consulting for Old London’s Melba Toast, “Toast for Everyday Health“ marketing campaign in 2009. Developed website and infrastructure.",
     "images": [
       {
-        "src": "/images/projects/melba-toast-for-everyday-health/01.png",
-        "alt": "Agency Consulting - Toast For Everyday Health 2009"
+        "src": "/images/projects/melba-toast-for-everyday-health/01.jpg",
+        "alt": "Agency Consulting - Toast For Everyday Health 2009",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -359,12 +395,10 @@
     "description": "Agency consulting for Philips. Developed an internal tool (API & Frontend Desktop App) for company wide notifications and communications directly in the desktop and system tray.",
     "images": [
       {
-        "src": "/images/projects/philips-internal-desktop-tool/01.png",
-        "alt": "Agency Consulting - Philips Desktop Tool 2009"
-      },
-      {
-        "src": "/images/projects/philips-internal-desktop-tool/02.png",
-        "alt": "Agency Consulting - Philips Desktop Tool 2009"
+        "src": "/images/projects/philips-internal-desktop-tool/01.jpg",
+        "alt": "Agency Consulting - Philips Desktop Tool 2009",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -376,12 +410,10 @@
     "description": "Agency consulting for HP. Developed website and infrastructure for the “Moms for Simplicity“ campaign featuring Darra Torres.",
     "images": [
       {
-        "src": "/images/projects/hp-moms-for-simplicity/01.png",
-        "alt": "Agency Consulting - HP Moms for Simplicity 2009"
-      },
-      {
-        "src": "/images/projects/hp-moms-for-simplicity/02.png",
-        "alt": "Agency Consulting - HP Moms for Simplicity 2009"
+        "src": "/images/projects/hp-moms-for-simplicity/01.jpg",
+        "alt": "Agency Consulting - HP Moms for Simplicity 2009",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -393,8 +425,10 @@
     "description": "For Warwick Publishing and Studio Style I planned, developed, and maintained an eCommerce platform, which I used to rapidly rebuild all of the companyʼs eCommerce websites. Warwick-Publishing.com, StudioStyle.com, and more... This platform is still in use today.\n\nStack: ASP.net Link: WarwickPublishing.com Link: StudioStyle.com",
     "images": [
       {
-        "src": "/images/projects/warwick-publishing/01.png",
-        "alt": "Full Stack Engineer - Warwick Publishing/Studio Style 2007 - 2009"
+        "src": "/images/projects/warwick-publishing/01.jpg",
+        "alt": "Full Stack Engineer - Warwick Publishing/Studio Style 2007 - 2009",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": [
@@ -415,12 +449,10 @@
     "description": "My first full-time role as a professional engineer. Rapidly developed custom web applications and dynamic websites for our clients. Stack: LAMP",
     "images": [
       {
-        "src": "/images/projects/etw/01.png",
-        "alt": "Full Stack Engineer - Experience The Web 2006 - 2007"
-      },
-      {
-        "src": "/images/projects/etw/02.png",
-        "alt": "Full Stack Engineer - Experience The Web 2006 - 2007"
+        "src": "/images/projects/etw/01.jpg",
+        "alt": "Full Stack Engineer - Experience The Web 2006 - 2007",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []
@@ -432,8 +464,10 @@
     "description": "Fox Valley Values was the first dynamic web site/application I built as a test project during my coding education for my local community. It had auctions, listings, marketplace, and other functionality. Built on the LAMP stack.\n\nWebsite: n/a",
     "images": [
       {
-        "src": "/images/projects/fox-valley-values/01.png",
-        "alt": "Fox Valley Values - 2005"
+        "src": "/images/projects/fox-valley-values/01.jpg",
+        "alt": "Fox Valley Values - 2005",
+        "width": 800,
+        "height": 600
       }
     ],
     "links": []

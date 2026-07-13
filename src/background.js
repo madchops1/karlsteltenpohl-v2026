@@ -26,14 +26,19 @@ const VERTEX = /* glsl */ `
 
   varying float vDepth;
 
+  float ridge(vec2 p) {
+    return 1.0 - abs(2.0 * noise(p) - 1.0);
+  }
+
   void main() {
     vec3 pos = position;
-    // scroll the field toward the camera; layered octaves for ridges
-    vec2 p = vec2(pos.x * 0.045, (pos.y + uTime * 14.0) * 0.045);
-    float h = noise(p) * 0.62 + noise(p * 2.3) * 0.26 + noise(p * 5.1) * 0.12;
-    // flatten a valley down the middle so the horizon stays open
-    float valley = smoothstep(0.0, 42.0, abs(pos.x));
-    pos.z = h * 26.0 * (0.25 + 0.75 * valley);
+    // ridged fractal — sharp geometric peaks, scrolling slowly toward camera
+    vec2 p = vec2(pos.x * 0.035, (pos.y + uTime * 9.0) * 0.035);
+    float h = ridge(p) * 0.60 + ridge(p * 2.1) * 0.27 + ridge(p * 4.3) * 0.13;
+    h = pow(h, 2.4);
+    // keep a flat valley down the middle so the horizon stays open
+    float valley = smoothstep(8.0, 60.0, abs(pos.x));
+    pos.z = h * 58.0 * (0.05 + 0.95 * valley);
     vGlow = h;
     vec4 mv = modelViewMatrix * vec4(pos, 1.0);
     vDepth = -mv.z;
@@ -93,7 +98,8 @@ export async function initBackground() {
     fragmentShader: FRAGMENT,
     wireframe: true,
   })
-  const geometry = new THREE.PlaneGeometry(320, 300, 110, 90)
+  // coarser mesh = bigger facets, more low-poly-mountain
+  const geometry = new THREE.PlaneGeometry(320, 300, 80, 64)
   const terrain = new THREE.Mesh(geometry, material)
   terrain.rotation.x = -Math.PI / 2
   terrain.position.set(0, -6, -80)

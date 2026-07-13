@@ -12,6 +12,7 @@ import {
 import { push, SITE_TITLE } from './router.js'
 import { glitchReveal, effectsEnabled } from './glitch.js'
 import { initBackground, setBackgroundEnabled } from './background.js'
+import { typewrite } from './typewriter.js'
 
 const CRT_KEY = 'crt-off'
 
@@ -60,8 +61,8 @@ export function registerCommands(term) {
         if (ctx.push) push(`/projects/${p.slug}`, p.title)
         else document.title = `${p.title} — Karl Steltenpohl`
         const node = renderProject(p)
+        typewrite(node, { onFrame: (f) => glitchReveal(f) })
         term.print(node)
-        glitchReveal(node)
         term.scrollToNode(node)
         return null
       },
@@ -73,8 +74,8 @@ export function registerCommands(term) {
       desc: 'who is karl?',
       run: () => {
         const node = renderAbout(projects)
+        typewrite(node, { onFrame: (f) => glitchReveal(f) })
         term.print(node)
-        glitchReveal(node)
         term.scrollToNode(node)
         return null
       },

@@ -45,11 +45,18 @@ export function renderLs(projects) {
   return nav
 }
 
-export function renderFrame(src, alt, label) {
+export function renderFrame(img, label, { eager = false } = {}) {
   const figure = el('figure', { class: 'frame' })
   figure.append(el('span', { class: 'frame-label', 'aria-hidden': 'true', text: label }))
   const wrap = el('span', { class: 'img-wrap' })
-  wrap.append(el('img', { src: withBase(src), alt, loading: 'lazy', decoding: 'async' }))
+  const attrs = { src: withBase(img.src), alt: img.alt, decoding: 'async' }
+  if (img.width && img.height) {
+    attrs.width = img.width
+    attrs.height = img.height
+  }
+  if (eager) attrs.fetchpriority = 'high'
+  else attrs.loading = 'lazy'
+  wrap.append(el('img', attrs))
   figure.append(wrap)
   return figure
 }
@@ -69,7 +76,9 @@ export function renderProject(p) {
   article.append(desc)
 
   p.images.forEach((img, i) => {
-    article.append(renderFrame(img.src, img.alt, `img: ${String(i + 1).padStart(2, '0')} / ${p.images.length}`))
+    article.append(
+      renderFrame(img, `img: ${String(i + 1).padStart(2, '0')} / ${p.images.length}`, { eager: i === 0 })
+    )
   })
 
   if (p.links.length) {
@@ -124,7 +133,9 @@ export function renderAbout(projects) {
     el('p', { text: `This terminal holds ${projects.length} projects — type 'ls' to list them.` })
   )
   article.append(desc)
-  article.append(renderFrame('/images/profile.jpg', 'Karl Steltenpohl', 'img: profile.jpg'))
+  article.append(
+    renderFrame({ src: '/images/profile.jpg', alt: 'Karl Steltenpohl' }, 'img: profile.jpg', { eager: true })
+  )
   return article
 }
 

@@ -87,6 +87,7 @@ export class Terminal {
     if (echo) this.echo(line)
     if (record) this.remember(line)
 
+    if (this.beforeExec) this.beforeExec()
     const [name, ...args] = line.split(/\s+/)
     const def = this.lookup(name.toLowerCase())
     if (!def) {
@@ -98,7 +99,10 @@ export class Terminal {
     }
     try {
       const out = def.run(args, { term: this, push })
-      if (out) this.print(out)
+      if (out) {
+        if (this.decorate) this.decorate(out)
+        this.print(out)
+      }
       if (!def.noAutoScroll) this.scrollToPrompt()
     } catch (err) {
       this.print(this.error(`${name}: ${err.message}`))
