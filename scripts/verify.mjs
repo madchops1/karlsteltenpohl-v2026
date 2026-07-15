@@ -1,11 +1,13 @@
-// Build gate: fails the build (and therefore the deploy) unless every one of
-// the 26 projects from the old site is present and complete in dist/.
+// Build gate: fails the build (and therefore the deploy) unless every project
+// is present and complete in dist/ — the 26 migrated from the old site plus any
+// added since (StraightPath Forward).
 import { readFile, readdir, stat } from 'node:fs/promises'
 
 const SLUGS = [
   'cvj-1',
   'visualz',
   'the-desire-company',
+  'straightpathforward',
   '58peaks',
   'visualz-v1-v2',
   'robot-and-puppy-2',

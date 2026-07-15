@@ -100,8 +100,9 @@ export function renderHome(projects) {
       el('p', {
         text:
           'Welcome to my site — two decades of software engineering: full-stack, ' +
-          'devsecops, frameworks, VJ tools and live-visual hardware, web platforms, ' +
-          'creative code, and engineering leadership.',
+          'devsecops, frameworks, fintech, ecommerce, consulting, SAAS, VJ tools and ' +
+          'live-visual hardware, web platforms, creative code, building teams, scaling ' +
+          'AI agents to production, and engineering leadership.',
       }),
     ])
   )

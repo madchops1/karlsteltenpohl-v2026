@@ -39,7 +39,7 @@ body {
   justify-content: center;
 }
 
-/* ---- three.js background ---- */
+/* ---- canvas background (self-playing minesweeper) ---- */
 #bg {
   position: fixed;
   inset: 0;
@@ -82,6 +82,38 @@ body {
 .tl-close { background: #ff5f56; }
 .tl-min { background: #ffbd2e; }
 .tl-max { background: #27c93f; }
+/* the min/max dots are live controls (minimize to play the background) */
+.tl-min, .tl-max { cursor: pointer; }
+.tl-min:hover { box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35) inset, 0 0 7px #ffbd2e; }
+.tl-max:hover { box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35) inset, 0 0 7px #27c93f; }
+
+/* minimized: the whole window folds away, exposing the full background game */
+html.term-min #term-window { display: none; }
+#term-restore { display: none; }
+html.term-min #term-restore {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 120;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 14px;
+  font: 0.8rem/1 var(--mono);
+  color: var(--dim);
+  background: rgba(16, 23, 16, 0.92);
+  border: 1px solid rgba(90, 138, 90, 0.4);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 10px 30px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+html.term-min #term-restore:hover { color: var(--fg); border-color: var(--accent); }
+#term-restore .tr-dot { width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e; box-shadow: 0 0 6px #ffbd2e; }
+/* during the flyer the ship sits where the chip would — ESC exits, so hide it */
+html.flyer-on #term-restore { display: none; }
 .tl-title {
   flex: 1;
   text-align: center;
@@ -166,6 +198,13 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 .banner-narrow { font-size: 13px; }
 .banner-narrow { display: none; }
 .tagline { margin: 0.5rem 0 1.5rem; }
+
+/* the ASCII logo doubles as a home button — click it to go back to the list */
+.mast-home { display: inline-block; color: inherit; text-decoration: none; cursor: pointer; }
+/* the logo only glows on hover — no underline, no background highlight */
+.mast-home:hover { text-decoration: none; background: none; }
+.mast-home:hover .banner { text-shadow: 0 0 12px rgba(51, 255, 51, 0.7); filter: brightness(1.12); }
+.mast-home:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
 
 .mast-row {
   display: flex;

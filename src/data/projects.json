@@ -2,7 +2,7 @@
   {
     "slug": "cvj-1",
     "title": "CVJ-1 VJ Deck",
-    "year": "",
+    "year": "2024–Present",
     "description": "The CVJ-1 is a compact touchscreen VJ deck built for performing live visuals with the immediacy of a DJ controller. Designed around VISUALZ 3, it combines a dedicated hardware interface, real-time visual mixing, audio-reactive control, clip-based layers, shaders, effects, and performance tools into one portable unit.\n\nInstead of treating video as something that only gets produced ahead of time, the CVJ-1 makes visuals playable. Artists can mix layers, trigger clips, react to music, adjust effects, and control a full visual set from a focused touchscreen workstation built specifically for VJs.\n\nThe goal was to create the video counterpart to a DJ deck: a self-contained device for generating, shaping, and performing visuals live. Whether used on stage, in a studio, or as part of a larger live production rig, the CVJ-1 gives visual artists a dedicated instrument for real-time performance.",
     "images": [
       {
@@ -22,7 +22,7 @@
   {
     "slug": "visualz",
     "title": "VISUALZ VJ Workstation v3.x.x",
-    "year": "",
+    "year": "2026–Present",
     "description": "VISUALZ 3 is a real-time workstation for live visuals, built to make video feel as performable as audio. It brings creation, generation, mixing, effects, layers, shaders, and audio-reactive control into one focused app for VJs, artists, performers, and live event creators.\n\nInstead of jumping between multiple tools, VISUALZ lets you build and perform inside a single environment. You can mix clip-based layers, react to live audio, generate visual assets, patch effects, control visuals with MIDI, and shape a full live set in real time.\n\nVersion 3 expands the original VISUALZ concept into a more complete creative system, with built-in AI tools for generating video, shaders, 3D models, textures, sprite sheets, and plug-ins. It is designed for both experimentation and performance, whether you are running visuals from a laptop or using the CVJ-1, the world’s first fully integrated touchscreen VJ deck.\n\nVISUALZ 3 is built around one core idea: video deserves tools that are as immediate, expressive, and playable as music.",
     "images": [
       {
@@ -60,9 +60,29 @@
     ]
   },
   {
+    "slug": "straightpathforward",
+    "title": "StraightPath Forward — Budgeting App",
+    "year": "2026",
+    "description": "StraightPath Forward is a forward-looking budgeting app built around a simple idea: your money lives on a calendar, so your budget should too. Instead of categorizing last month's spending, you lay out the year ahead—every paycheck, bill, transfer, and goal—across all of your accounts at once, and watch the running balances play out day by day.\n\nEach account gets its own ledger—checking, savings, credit cards, loans, retirement—sitting side by side, so you can see exactly how a transfer on the 15th ripples through every balance. Line items carry category tags like housing, food, dining, savings, and transport; recurring transactions repeat themselves automatically; and transfers stay linked between accounts. A month scrubber and a Detail/Years toggle let you zoom from a single day all the way out to a multi-year view.\n\nThe bottom line is always in view. Live per-account totals and per-category rollups update as you plan, so you can answer \"can I afford this?\" before it happens rather than after. Past months lock to keep your history intact, and everything you enter exports and imports as your own data.\n\nIt's a personal-finance tool for people who think in cash flow: a spreadsheet's flexibility with a purpose-built interface for planning the straight path forward.",
+    "images": [
+      {
+        "src": "/images/projects/straightpathforward/01.jpg",
+        "alt": "StraightPath Forward budgeting app — a year of accounts, line items, and running balances",
+        "width": 1600,
+        "height": 786
+      }
+    ],
+    "links": [
+      {
+        "label": "StraightPathForward.com",
+        "url": "https://straightpathforward.com"
+      }
+    ]
+  },
+  {
     "slug": "58peaks",
     "title": "58peaks",
-    "year": "",
+    "year": "2025",
     "description": "58Peaks.net is my passion project—a creative journey to capture the beauty and spirit of Colorado’s 14ers through art and design. Each poster in the series is a hand-crafted tribute to one of Colorado’s 58 peaks over 14,000 feet, blending my love for the outdoors with my background in design and technology.\n\nWhat started as a personal challenge—to summit, and learn about these mountains—has grown into a collection that celebrates adventure, resilience, and the landscapes that inspire us. For me, 58Peaks is more than artwork; it’s a way to share the awe of these summits and to connect with others who find meaning in the mountains.",
     "images": [
       {
@@ -88,7 +108,7 @@
   {
     "slug": "visualz-v1-v2",
     "title": "VISUALZ VJ Worksation v1.x.x & v2.x.x",
-    "year": "",
+    "year": "2018–2025",
     "description": "Since 2018 I’ve been building VISUALZ (visualzstudio.com), a project that’s grown into a fully-fledged tool for DJs, artists, and performers to bring their music to life with real-time, audio-reactive visuals.\n\nWhat started as a creative experiment has gone through dozens of versions and iterations, each one pushing the boundaries of what live visuals can be. Along the way, I’ve designed not only the software but also hardware that’s currently in development—making VISUALZ a complete platform for performance and expression.\n\nAt its core, VISUALZ is about merging sound and light in a way that feels intuitive, immersive, and powerful. It’s a project that’s continually evolving, shaped by feedback from the community and my own obsession with the intersection of music, technology, and design.",
     "images": [
       {
@@ -108,7 +128,7 @@
   {
     "slug": "robot-and-puppy-2",
     "title": "Robot & Puppy Coloring Book #2",
-    "year": "",
+    "year": "2018",
     "description": "The second coloring book in the series.",
     "images": [
       {
@@ -128,7 +148,7 @@
   {
     "slug": "robot-and-puppy-1",
     "title": "Robot and Puppy Coloring Book #1",
-    "year": "",
+    "year": "2017",
     "description": "The first in the coloring book series.",
     "images": [
       {
@@ -148,7 +168,7 @@
   {
     "slug": "json-threejs-character-generator",
     "title": "JSON Three.js Character Generator",
-    "year": "",
+    "year": "2017",
     "description": "Building a 3D character from scratch in Three.js can sometimes feel like sculpting in code—painstaking to position each limb, sweat over materials and geometry settings, and then wire up animation logic. What if you could define your entire character—head, torso, arms, legs, tails or even antennae—in a single JSON-like object, and have it instantiated, shaded, and ready-to-animate with one constructor call? That’s exactly what the Robot + Puppy character generator does.\n\nObject-Notation Bootstrap Define any number of body parts and dimensions in a plain JavaScript object. No more copy-pasting sphere or box geometry setups for every limb.\n\nAutomatic Grouping & Positioning Each part is added to a central THREE.Group so you can move, rotate or scale your whole character as one.\n\nCustomizable Materials Supply material parameters (colors, shininess, textures) per-part or let it fall back to sensible defaults.\n\nBuilt-In Animations & Behaviors Robots blink, move mouths and grab; puppies wag tails, blink, lick and follow your mouse pointer—all without extra animation boilerplate.\n\nEasy Scene Integration A simple addCharacter(bodyDims, x, y, z, key) call places your character in the scene, ready for lights, camera and orbit controls.\n\nAt its core is Character.js, a single class that:\n\nParses your dimensions object, looping through keys like head, body, armLeft, legRight, etc.\n\nCreates the appropriate THREE.Geometry (BoxGeometry, SphereGeometry, CylinderGeometry, etc.) with your sizes.\n\nApplies MeshPhongMaterial (or your custom material options) and enables shadows.\n\nPositions each mesh relative to a central pivot, so limbs sit correctly on the torso.\n\nAdds each mesh to a THREE.Group, exposing that group for scene insertion.\n\nYou never have to manually compute offsets or parent/child relationships—Character.js does it for you.\n\n1. Include Three.js and the character generator.\n\n2. Define Your Character\n\n3. Define Your Character\n\nPlay with it live on CodePen: https://codepen.io/madchops/pen/GWrvWN\n\nGrab the source (Character.js) on GitHub: https://github.com/madchops1/robotandpuppy-threejs\n\nSpeed: Spin up placeholders or fully featured characters in minutes.\n\nFlexibility: Swap shapes, colors or entire parts by editing your dimensions object.\n\nScalability: Add new body parts—wings, tails, tools—without touching the core generator code.\n\nMaintainability: Centralized character logic keeps your scene code clean and focused on choreography.\n\nWhether you’re prototyping game avatars, building a 3D chat app or just exploring creative coding, this generator turns hours of setup into a few lines of JSON. Give your next Three.js project a head start—literally—by bootstrapping your characters from object notation to fully interactive 3D models.\n\nExplore the live demo on CodePen—adapt the JSON to your imagination, and get your Three.js characters running in record time.",
     "images": [
       {

@@ -73,7 +73,8 @@ function projectHtml(p) {
 function homeHtml() {
   return (
     `${echoHtml('home')}<div class="block"><p>Welcome to my site — two decades of software engineering: full-stack, ` +
-    `devsecops, frameworks, VJ tools and live-visual hardware, web platforms, creative code, and engineering leadership.</p></div>` +
+    `devsecops, frameworks, fintech, ecommerce, consulting, SAAS, VJ tools and live-visual hardware, web platforms, ` +
+    `creative code, building teams, scaling AI agents to production, and engineering leadership.</p></div>` +
     `<div class="hint">type <code>help</code> for commands, <code>open &lt;slug&gt;</code> to view a project — or just click around.</div>\n` +
     lsHtml()
   )

@@ -1,0 +1,260 @@
+/* Retro popup ads — 90s "you are the 1,000,000th visitor" web-junk crossed with
+   Tokyo neon. Deliberately clashes with the phosphor-green terminal: hot magenta/
+   cyan/violet, gradient chrome, blinking badges, a scrolling marquee. They pop up
+   a few seconds after boot, scattered and slightly askew, and can be dragged or
+   closed. Decorative only — `crt off` (html.crt-off) removes them, and the loud
+   animation is gated behind prefers-reduced-motion. Each ad's CTA routes into the
+   matching project page via the normal router. */
+
+#ads {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none; /* only the ad boxes catch clicks; terminal stays usable */
+}
+html.crt-off #ads { display: none; }
+/* the Konami dodge-flyer takes over the screen — get the popups out of its way */
+html.flyer-on #ads { display: none; }
+
+.ad {
+  --neon: #21f3ff;
+  --neon2: #ff2e88;
+  --panel: #0b0316;
+  position: fixed;
+  width: min(330px, 84vw);
+  pointer-events: auto;
+  font-family: var(--mono);
+  color: #eafcff;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background:
+    linear-gradient(var(--panel), var(--panel)) padding-box,
+    linear-gradient(135deg, var(--neon), var(--neon2)) border-box;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 0 22px color-mix(in srgb, var(--neon) 55%, transparent),
+    0 0 44px color-mix(in srgb, var(--neon2) 30%, transparent),
+    0 26px 60px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  transform: rotate(var(--rot, 0deg)) scale(var(--scale, 1));
+  transform-origin: center;
+}
+.ad--cyan { --neon: #21f3ff; --neon2: #ff2e88; }
+.ad--magenta { --neon: #ff2e88; --neon2: #b14dff; }
+.ad--violet { --neon: #b14dff; --neon2: #21f3ff; }
+
+/* random size tiers (one picked per spawn) — scaled about center so the whole
+   card grows/shrinks, not just its width */
+.ad--sm { --scale: 0.82; }
+.ad--md { --scale: 1; }
+.ad--lg { --scale: 1.2; }
+
+/* scattered starting spots + tilt — three distinct zones so the tall cards
+   don't stack (top-left, top-right, bottom-center) */
+.ad.p0 { top: 8vh; left: 4vw; --rot: -3deg; }
+.ad.p1 { top: 8vh; right: 4vw; --rot: 3deg; }
+.ad.p2 { bottom: 6vh; left: calc(50vw - 165px); --rot: -2deg; }
+
+.ad.dragging { transform: rotate(0deg) scale(calc(var(--scale, 1) * 1.02)); cursor: grabbing; }
+
+/* ---- title bar ---- */
+.ad-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 6px 5px 9px;
+  background: linear-gradient(90deg, var(--neon2), var(--neon));
+  color: #0a0212;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.ad-bar-title { text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ad-bar-btns { display: inline-flex; align-items: center; gap: 5px; flex: none; }
+.ad-min, .ad-max {
+  width: 11px; height: 11px; border-radius: 2px;
+  background: rgba(10, 2, 18, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+.ad-close {
+  width: 16px; height: 16px; padding: 0;
+  display: grid; place-items: center;
+  border: 0; border-radius: 3px;
+  background: #0a0212; color: #fff;
+  font: 700 13px/1 var(--mono);
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+.ad-close:hover { background: #ff2e2e; color: #fff; }
+
+/* ---- body ---- */
+.ad-body {
+  position: relative;
+  padding: 12px 13px 11px;
+  background:
+    radial-gradient(120% 90% at 90% -10%, color-mix(in srgb, var(--neon) 22%, transparent), transparent 60%),
+    radial-gradient(120% 90% at -10% 120%, color-mix(in srgb, var(--neon2) 22%, transparent), transparent 60%),
+    var(--panel);
+}
+.ad-body::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.28) 0, rgba(0, 0, 0, 0.28) 1px, transparent 1px, transparent 3px);
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+
+/* blinking corner badge */
+.ad-badge {
+  position: absolute;
+  top: -2px; left: 10px;
+  padding: 3px 8px 4px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  color: #0a0212;
+  background: #ffe14d;
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%);
+  box-shadow: 0 0 12px rgba(255, 225, 77, 0.8);
+}
+
+.ad-hero { display: block; margin: 14px 0 10px; text-decoration: none; }
+.ad-thumb {
+  display: block;
+  position: relative;
+  height: 104px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--neon) 60%, transparent), 0 0 16px color-mix(in srgb, var(--neon) 40%, transparent);
+}
+.ad-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(1.25) contrast(1.05) brightness(0.95);
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+.ad-thumb::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--neon2) 45%, transparent)),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0, rgba(0, 0, 0, 0.25) 1px, transparent 1px, transparent 3px);
+}
+.ad-hero:hover .ad-thumb img { transform: scale(1.06); filter: saturate(1.5) contrast(1.1) brightness(1.05); }
+
+.ad-copy { position: relative; }
+.ad-title {
+  font-size: 22px; font-weight: 700; line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 0 0 6px var(--neon), 0 0 16px var(--neon), 0 0 2px #fff;
+}
+.ad-sub {
+  margin-top: 3px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--neon) 78%, #fff 22%);
+}
+.ad-blurb {
+  margin: 8px 0 0;
+  font-size: 12px; line-height: 1.45;
+  color: #c9dbe6;
+}
+
+/* scrolling marquee */
+.ad-marquee {
+  position: relative;
+  margin: 11px 0;
+  padding: 4px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid color-mix(in srgb, var(--neon) 45%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--neon) 45%, transparent);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--neon);
+  text-shadow: 0 0 8px var(--neon);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.ad-marquee span { display: inline-block; padding-left: 100%; }
+
+/* actions — ghost "see more" (→ terminal) + filled "launch" (→ real site) */
+.ad-actions { display: flex; gap: 8px; margin-top: 2px; }
+.ad-btn {
+  flex: 1;
+  padding: 9px 8px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-radius: 5px;
+}
+.ad-btn:hover { text-decoration: none; }
+.ad-more {
+  color: var(--neon);
+  background: color-mix(in srgb, var(--neon) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--neon) 70%, transparent);
+  text-shadow: 0 0 6px color-mix(in srgb, var(--neon) 55%, transparent);
+}
+.ad-more:hover { background: color-mix(in srgb, var(--neon) 22%, transparent); }
+.ad-cta {
+  flex: 1.35;
+  color: #0a0212;
+  background: linear-gradient(90deg, var(--neon), var(--neon2));
+  box-shadow: 0 0 14px color-mix(in srgb, var(--neon) 60%, transparent), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+.ad-cta:hover { filter: brightness(1.12) saturate(1.15); }
+
+.ad-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 9px;
+  font-size: 9.5px; letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--neon) 55%, #9fb4bf);
+}
+.ad-visitor { color: #ffe14d; text-shadow: 0 0 8px rgba(255, 225, 77, 0.6); }
+
+/* small screens: stack them, centered via equal insets (no translateX — the
+   entrance keyframe overwrites transform, so centering can't live there) */
+@media (max-width: 640px) {
+  .ad { width: auto; left: 6vw; right: 6vw; transform-origin: top center; }
+  .ad.p0 { top: 5vh; bottom: auto; }
+  .ad.p1 { top: auto; bottom: 4vh; }
+  .ad.p2 { top: 34vh; bottom: auto; }
+  /* cards are already near full-width here — tame the size range so the large
+     tier can't overflow the viewport */
+  .ad--sm { --scale: 0.92; }
+  .ad--lg { --scale: 1; }
+}
+
+/* ---- motion ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .ad { animation: ad-in 0.5s cubic-bezier(0.18, 1.5, 0.4, 1) both; }
+  .ad.closing { animation: ad-out 0.2s ease forwards; }
+  .ad-badge { animation: ad-blink 1s steps(1) infinite; }
+  .ad-marquee span { animation: ad-scroll 11s linear infinite; }
+  .ad-title { animation: ad-flicker 4.5s steps(1) 0.5s infinite; }
+}
+.ad.closing { opacity: 0; }
+
+@keyframes ad-in {
+  from { opacity: 0; transform: rotate(var(--rot, 0deg)) scale(calc(var(--scale, 1) * 0.55)) translateY(24px); }
+  to { opacity: 1; transform: rotate(var(--rot, 0deg)) scale(var(--scale, 1)) translateY(0); }
+}
+@keyframes ad-out {
+  to { opacity: 0; transform: rotate(var(--rot, 0deg)) scale(calc(var(--scale, 1) * 0.6)); }
+}
+@keyframes ad-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0.15; } }
+@keyframes ad-scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@keyframes ad-flicker {
+  0%, 96%, 100% { text-shadow: 0 0 6px var(--neon), 0 0 16px var(--neon), 0 0 2px #fff; }
+  97%, 99% { text-shadow: none; opacity: 0.7; }
+}
