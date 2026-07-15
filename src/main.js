@@ -91,7 +91,13 @@ window.addEventListener('keydown', (e) => {
 const initial = commandForPath(location.pathname) || 'home'
 term.clear()
 const boot = () => {
+  // Type the boot output WITHOUT follow-scrolling, so a long home listing (or a
+  // cold project page) stays pinned at the top instead of scrolling itself down.
+  // Interactive commands keep the following decorate, restored right after.
+  const decorate = term.decorate
+  term.decorate = (node) => typewrite(node, { scroller: term.scroller })
   term.exec(initial, { echo: true, push: false, record: false })
+  term.decorate = decorate
   term.scrollToTop()
   // Start the animated background only after the boot sequence has the
   // stage — keeps the canvas render loop off the main thread during load.
